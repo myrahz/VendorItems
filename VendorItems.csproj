@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ExileCore">
+      <HintPath>D:\Funny Tools\PoE\310League\320 ph\PoeHelper\ExileCore.dll</HintPath>
+    </Reference>
+    <Reference Include="GameOffsets">
+      <HintPath>D:\Funny Tools\PoE\310League\320 ph\PoeHelper\GameOffsets.dll</HintPath>
+    </Reference>
+    <Reference Include="ImGui.NET">
+      <HintPath>D:\Funny Tools\PoE\310League\320 ph\PoeHelper\ImGui.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>D:\Funny Tools\PoE\310League\320 ph\PoeHelper\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Mathematics">
+      <HintPath>D:\Funny Tools\PoE\310League\320 ph\PoeHelper\SharpDX.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.5\ref\net6.0\System.Windows.Forms.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
