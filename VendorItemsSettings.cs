@@ -239,7 +239,7 @@ namespace VendorItems
             AddedColdDamageQuiverScore = new RangeNode<int>(15, 1, 2000);
             AddedLightDamageQuiverScore = new RangeNode<int>(15, 1, 2000);
             AddedPhysicalDamageQuiverScore = new RangeNode<int>(30, 1, 2000);
-            0
+            
             AddedFireToSpellsScore = new RangeNode<int>(20, 1, 2000);
             AddedColdToSpellsScore = new RangeNode<int>(13, 1, 2000);
             AddedLightningToSpellsScore = new RangeNode<int>(13, 1, 2000);

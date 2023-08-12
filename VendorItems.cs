@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Windows.Forms;
+
 using System;
 
 using ExileCore;
@@ -100,9 +100,11 @@ namespace VendorItems
             var auxChildrenFirst = ingameState.IngameUi.PurchaseWindow;
             var haggleWindow = ingameState.IngameUi.HaggleWindow;
 
+            var haggleText = haggleWindow.GetChildFromIndices(6, 2, 0)?.Text;
 
 
-            if ((auxChildrenFirst.IsVisible || haggleWindow.IsVisible) && interestingItems.Count() > 0) { 
+
+            if ((auxChildrenFirst.IsVisible || (haggleWindow.IsVisible && haggleText =="Gamble")) && interestingItems.Count() > 0) { 
 
                 Vector2 newInfoPanel = new Vector2(000, 500);
                 var drawBox = new RectangleF(newInfoPanel.X, newInfoPanel.Y, 306, 200);
@@ -194,7 +196,7 @@ namespace VendorItems
             var haggleWindow = ingameState.IngameUi.HaggleWindow;
             var inventory = haggleWindow.GetChildFromIndices(8, 1, 0, 0);
             var itemList = inventory?.GetChildrenAs<NormalInventoryItem>().Skip(1).ToList() ?? new List<NormalInventoryItem>();
-
+            var haggleText = haggleWindow.GetChildFromIndices(6, 2, 0)?.Text;
             var playerLevel = GameController.Player.GetComponent<Player>().Level;
             var hoveredItem = ingameState.UIHover.AsObject<HoverItemIcon>();
             var UIHoverEntity = ingameState.UIHover.Entity;
@@ -205,214 +207,214 @@ namespace VendorItems
             {
                 playerLevelOverride = Math.Min(60, Settings.PlayerLevelOverride);
             }
-
-            foreach (var item in itemList)
-            {
-                List<int> weights = new List<int>();
-
-                if (item == null) continue;
-
-
-                if (item.Item.Path.Contains("Currency") || item.Item.Path.Contains("Gems")) continue;
-
-
-                var drawRect = item.GetClientRect();
-
-                var itemMods = item?.Item.GetComponent<Mods>();
-                var itemSockets = item?.Item.GetComponent<Sockets>();
-                var itemName = item?.Item.GetComponent<Base>().Name;
-                var baseItemType = GameController.Files.BaseItemTypes.Translate(item.Item.Path);
-                var className = baseItemType.ClassName;
-
-                bool isRGB = itemSockets?.IsRGB ?? false;
-                int links = itemSockets?.LargestLinkSize ?? 0;
-                int sockets = itemSockets?.NumberOfSockets ?? 0;
-                var stats = itemMods?.HumanStats;
-                var mods = itemMods?.ItemMods;
-
-                List<string> interestingThings = new List<string>();
-
-
-                //var auxChildrenFirst = ingameState?.IngameUi?.PurchaseWindow;
-
-                //var auxpurchaseWindow = auxChildrenFirst?.GetChildAtIndex(7)?.GetChildFromIndices(1);
-                if (true)
-                //if (auxpurchaseWindow != null)
+            if(haggleText == "Gamble") { 
+                foreach (var item in itemList)
                 {
-                    //var purchaseWindow = auxpurchaseWindow?.GetChildFromIndices(inventoryIndex - 1);
-                    //var squareWidth = (int)purchaseWindow?.GetClientRect().Width / columns;
-                    //var squareHeight = (int)purchaseWindow?.GetClientRect().Height / rows;
-                    //var initialTradeWindowX = (int)purchaseWindow?.GetClientRect().TopLeft.X;
-                    //var initialTradeWindowY = (int)purchaseWindow?.GetClientRect().TopLeft.Y;
+                    List<int> weights = new List<int>();
 
-                    //var itemRectPosX = initialTradeWindowX + (item.PosX * squareWidth);
-                    //var itemRectPosY = initialTradeWindowY + (item.PosY * squareHeight);
-                    //var itemRectWidth = squareWidth * item.SizeX;
-                    //var itemRectHeight = squareHeight * item.SizeY;
-
-                    //var drawRectFix = new RectangleF(itemRectPosX, itemRectPosY, itemRectWidth, itemRectHeight);
+                    if (item == null) continue;
 
 
-                    //drawRectFix.Top += 7;
-                    ////drawRectFix.Bottom += offset ;
-                    ////drawRectFix.Right += offset ;
-                    //drawRectFix.Left += 7;
+                    if (item.Item.Path.Contains("Currency") || item.Item.Path.Contains("Gems")) continue;
 
-                    drawRect.Top += 7;
-                    drawRect.Left += 7;
 
-                    //bool isPageVisible = false;
-                    //if (purchaseWindow != null)
-                    //{
-                    //    isPageVisible = purchaseWindow.IsVisible;
-                    //}
-                    bool anyMatch = false;
-                    if(PartialClassNamesToIgnore.Count > 0 && Settings.IgnoreFiltering)
+                    var drawRect = item.GetClientRect();
+
+                    var itemMods = item?.Item.GetComponent<Mods>();
+                    var itemSockets = item?.Item.GetComponent<Sockets>();
+                    var itemName = item?.Item.GetComponent<Base>().Name;
+                    var baseItemType = GameController.Files.BaseItemTypes.Translate(item.Item.Path);
+                    var className = baseItemType.ClassName;
+
+                    bool isRGB = itemSockets?.IsRGB ?? false;
+                    int links = itemSockets?.LargestLinkSize ?? 0;
+                    int sockets = itemSockets?.NumberOfSockets ?? 0;
+                    var stats = itemMods?.HumanStats;
+                    var mods = itemMods?.ItemMods;
+
+                    List<string> interestingThings = new List<string>();
+
+
+                    //var auxChildrenFirst = ingameState?.IngameUi?.PurchaseWindow;
+
+                    //var auxpurchaseWindow = auxChildrenFirst?.GetChildAtIndex(7)?.GetChildFromIndices(1);
+                    if (true)
+                    //if (auxpurchaseWindow != null)
                     {
-                        anyMatch = PartialClassNamesToIgnore.Any(className.Contains);
+                        //var purchaseWindow = auxpurchaseWindow?.GetChildFromIndices(inventoryIndex - 1);
+                        //var squareWidth = (int)purchaseWindow?.GetClientRect().Width / columns;
+                        //var squareHeight = (int)purchaseWindow?.GetClientRect().Height / rows;
+                        //var initialTradeWindowX = (int)purchaseWindow?.GetClientRect().TopLeft.X;
+                        //var initialTradeWindowY = (int)purchaseWindow?.GetClientRect().TopLeft.Y;
+
+                        //var itemRectPosX = initialTradeWindowX + (item.PosX * squareWidth);
+                        //var itemRectPosY = initialTradeWindowY + (item.PosY * squareHeight);
+                        //var itemRectWidth = squareWidth * item.SizeX;
+                        //var itemRectHeight = squareHeight * item.SizeY;
+
+                        //var drawRectFix = new RectangleF(itemRectPosX, itemRectPosY, itemRectWidth, itemRectHeight);
+
+
+                        //drawRectFix.Top += 7;
+                        ////drawRectFix.Bottom += offset ;
+                        ////drawRectFix.Right += offset ;
+                        //drawRectFix.Left += 7;
+
+                        drawRect.Top += 7;
+                        drawRect.Left += 7;
+
+                        //bool isPageVisible = false;
+                        //if (purchaseWindow != null)
+                        //{
+                        //    isPageVisible = purchaseWindow.IsVisible;
+                        //}
+                        bool anyMatch = false;
+                        if(PartialClassNamesToIgnore.Count > 0 && Settings.IgnoreFiltering)
+                        {
+                            anyMatch = PartialClassNamesToIgnore.Any(className.Contains);
+                        }
+
+
+
+
+                        //bool anyMatch = PartialClassNamesToIgnore.Any(item => item.Contains(className));
+
+                        if (!anyMatch)
+                        {
+                            var modCheckReturn = modCheck(item.Item);
+
+                            interestingThings.AddRange(modCheckReturn.Item2);
+                            weights.AddRange(modCheckReturn.Item1);
+                        }
+
+                        if (links == 6)
+                        {
+                            interestingThings.Add("SIX LINK POGGERS");
+                            weights.Add(Settings.SixLinkScore);
+                        }
+                        else if (links == 5)
+                        {
+                            interestingThings.Add("FIVE LINK");
+                            weights.Add(Settings.FiveLinkScore);
+                        }
+                        else if (sockets == 6)
+                        {
+                            interestingThings.Add("SIX SOCKET");
+                            weights.Add(Settings.SixSocketScore);
+                        }
+                        else if (links == 4 && !anyMatch)
+                        {
+
+                            var linkColors = itemSockets.SocketGroup.First(s => s.Length == 4);
+                            var orderedLinkColors = String.Concat(linkColors.OrderByDescending(c => c));
+
+                            //LogMessage("4L " + linkColors + " ordered " + orderedLinkColors, 5, Color.Green);
+                            if (FourLinkStringList.Contains(orderedLinkColors) && playerLevelOverride <= Settings.FourLinkCharacterLevelThreshold)
+                            {
+                                interestingThings.Add(orderedLinkColors + " 4L " + className);
+                                weights.Add(Settings.FourLinkScore);
+                            }
+
+                        }
+                        else if (links == 3 && !anyMatch)
+                        {
+
+                            var linkColors = itemSockets.SocketGroup.First(s => s.Length == 3);
+                            var orderedLinkColors = String.Concat(linkColors.OrderByDescending(c => c));
+
+                            //LogMessage("3L " + linkColors + " ordered " + orderedLinkColors, 5, Color.Green);
+                            if (ThreeLinkStringList.Contains(orderedLinkColors) && playerLevelOverride <= Settings.ThreeLinkCharacterLevelThreshold)
+                            {
+                                interestingThings.Add(orderedLinkColors + " 3L " + className);
+                                weights.Add(Settings.ThreeLinkScore);
+                            }
+
+                        }
+
+
+                        if (isRGB)
+                        {
+                            interestingThings.Add("RGB");
+                            weights.Add(Settings.RGBScore);
+
+                        }
+
+
+                        //INTERESTINGTHINGS LIST
+                        //WEIGHTS LIST
+
+
+                        if (interestingThings.Count() > 0)
+                        {
+
+                            var scaleFactor = 5.2f - (0.07 * playerLevelOverride);
+                            int finalScore = 0;
+                            if (Settings.UseScoreLevelScaler)
+                            {
+                                finalScore = (int)(weights.Sum() * scaleFactor);
+                            }
+                            else
+                            {
+                                finalScore = (int)(weights.Sum());
+                            }
+
+                            string concatInterestingStuff = string.Join(",", interestingThings);
+                            var newItem = (className, concatInterestingStuff, inventoryIndex, finalScore);
+
+                            // Check if the item exists before adding
+                            if (!DataExists(interestingItems, newItem))
+                            {
+                                interestingItems.Add(newItem);
+                            }
+
+                            var colorBorder = Color.White;
+                            var drawBox = new RectangleF(drawRect.X, drawRect.Y - 30, drawRect.Width, drawRect.Height);
+                            var drawBoxScour = new RectangleF(drawRect.X + drawRect.Width / 4, drawRect.Y + drawRect.Height / 4, drawRect.Width / 2, drawRect.Height / 2);
+                            var drawBox2 = new RectangleF(drawRect.X + 2, drawRect.Y + 2, drawRect.Width - 4, drawRect.Height - 4);
+
+
+
+                            if (finalScore >= Settings.STierThreshold)
+                            {
+                                colorBorder = Settings.STierThresholdColor;
+
+                            }
+                            else if (finalScore >= Settings.ATierThreshold)
+                            {
+                                colorBorder = Settings.ATierThresholdColor;
+                            }
+                            else if (finalScore >= Settings.BTierThreshold)
+                            {
+                                colorBorder = Settings.BTierThresholdColor;
+                            }
+                            else if (finalScore >= Settings.CTierThreshold)
+                            {
+                                colorBorder = Settings.CTierThresholdColor;
+                            }
+                            var canDraw = false;
+                            if (tooltipRect == null)
+                            {
+                                canDraw = true;
+                            }
+                            else
+                            {
+                                canDraw = !checkRectOverlaps(drawRect, (RectangleF)tooltipRect);
+                            }
+
+
+                            if (true && canDraw)
+                            {
+                                Graphics.DrawFrame(drawRect, colorBorder, 5);
+                            }
+
+                        }
                     }
 
 
-
-
-                    //bool anyMatch = PartialClassNamesToIgnore.Any(item => item.Contains(className));
-
-                    if (!anyMatch)
-                    {
-                        var modCheckReturn = modCheck(item.Item);
-
-                        interestingThings.AddRange(modCheckReturn.Item2);
-                        weights.AddRange(modCheckReturn.Item1);
-                    }
-
-                    if (links == 6)
-                    {
-                        interestingThings.Add("SIX LINK POGGERS");
-                        weights.Add(Settings.SixLinkScore);
-                    }
-                    else if (links == 5)
-                    {
-                        interestingThings.Add("FIVE LINK");
-                        weights.Add(Settings.FiveLinkScore);
-                    }
-                    else if (sockets == 6)
-                    {
-                        interestingThings.Add("SIX SOCKET");
-                        weights.Add(Settings.SixSocketScore);
-                    }
-                    else if (links == 4 && !anyMatch)
-                    {
-
-                        var linkColors = itemSockets.SocketGroup.First(s => s.Length == 4);
-                        var orderedLinkColors = String.Concat(linkColors.OrderByDescending(c => c));
-
-                        //LogMessage("4L " + linkColors + " ordered " + orderedLinkColors, 5, Color.Green);
-                        if (FourLinkStringList.Contains(orderedLinkColors) && playerLevelOverride <= Settings.FourLinkCharacterLevelThreshold)
-                        {
-                            interestingThings.Add(orderedLinkColors + " 4L " + className);
-                            weights.Add(Settings.FourLinkScore);
-                        }
-
-                    }
-                    else if (links == 3 && !anyMatch)
-                    {
-
-                        var linkColors = itemSockets.SocketGroup.First(s => s.Length == 3);
-                        var orderedLinkColors = String.Concat(linkColors.OrderByDescending(c => c));
-
-                        //LogMessage("3L " + linkColors + " ordered " + orderedLinkColors, 5, Color.Green);
-                        if (ThreeLinkStringList.Contains(orderedLinkColors) && playerLevelOverride <= Settings.ThreeLinkCharacterLevelThreshold)
-                        {
-                            interestingThings.Add(orderedLinkColors + " 3L " + className);
-                            weights.Add(Settings.ThreeLinkScore);
-                        }
-
-                    }
-
-
-                    if (isRGB)
-                    {
-                        interestingThings.Add("RGB");
-                        weights.Add(Settings.RGBScore);
-
-                    }
-
-
-                    //INTERESTINGTHINGS LIST
-                    //WEIGHTS LIST
-
-
-                    if (interestingThings.Count() > 0)
-                    {
-
-                        var scaleFactor = 5.2f - (0.07 * playerLevelOverride);
-                        int finalScore = 0;
-                        if (Settings.UseScoreLevelScaler)
-                        {
-                            finalScore = (int)(weights.Sum() * scaleFactor);
-                        }
-                        else
-                        {
-                            finalScore = (int)(weights.Sum());
-                        }
-
-                        string concatInterestingStuff = string.Join(",", interestingThings);
-                        var newItem = (className, concatInterestingStuff, inventoryIndex, finalScore);
-
-                        // Check if the item exists before adding
-                        if (!DataExists(interestingItems, newItem))
-                        {
-                            interestingItems.Add(newItem);
-                        }
-
-                        var colorBorder = Color.White;
-                        var drawBox = new RectangleF(drawRect.X, drawRect.Y - 30, drawRect.Width, drawRect.Height);
-                        var drawBoxScour = new RectangleF(drawRect.X + drawRect.Width / 4, drawRect.Y + drawRect.Height / 4, drawRect.Width / 2, drawRect.Height / 2);
-                        var drawBox2 = new RectangleF(drawRect.X + 2, drawRect.Y + 2, drawRect.Width - 4, drawRect.Height - 4);
-
-
-
-                        if (finalScore >= Settings.STierThreshold)
-                        {
-                            colorBorder = Settings.STierThresholdColor;
-
-                        }
-                        else if (finalScore >= Settings.ATierThreshold)
-                        {
-                            colorBorder = Settings.ATierThresholdColor;
-                        }
-                        else if (finalScore >= Settings.BTierThreshold)
-                        {
-                            colorBorder = Settings.BTierThresholdColor;
-                        }
-                        else if (finalScore >= Settings.CTierThreshold)
-                        {
-                            colorBorder = Settings.CTierThresholdColor;
-                        }
-                        var canDraw = false;
-                        if (tooltipRect == null)
-                        {
-                            canDraw = true;
-                        }
-                        else
-                        {
-                            canDraw = !checkRectOverlaps(drawRect, (RectangleF)tooltipRect);
-                        }
-
-
-                        if (true && canDraw)
-                        {
-                            Graphics.DrawFrame(drawRect, colorBorder, 5);
-                        }
-
-                    }
                 }
-
 
             }
 
-
-          
         }
 
         private bool checkRectOverlaps(RectangleF rect1, RectangleF rect2)
