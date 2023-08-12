@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ExileCore.Shared.Attributes;
+﻿using ExileCore.Shared.Attributes;
 using ExileCore.Shared.Interfaces;
 using ExileCore.Shared.Nodes;
 using SharpDX;
@@ -9,24 +8,6 @@ namespace VendorItems
    
     public class VendorItemsSettings : ISettings
     {
-
-        static List<string> SortLinks(List<string> inputList)
-        {
-            List<string> result = new List<string>();
-
-            foreach (string item in inputList)
-            {
-                var aux = String.Concat(item.OrderBy(c => c));
-                if (!result.Contains(aux))
-                {
-                    result.Add(aux);
-                }
-
-            }
-
-            return result;
-        }
-
         public ToggleNode DebugMode { get; set; }
 
         public ToggleNode PlayerLevelOverrideDebug { get; set; }
@@ -47,7 +28,6 @@ namespace VendorItems
         public TextNode FourLinkStrings { get; set; }
         public RangeNode<int> FourLinkScore { get; set; }
         public RangeNode<int> FourLinkCharacterLevelThreshold { get; set; }
-        
         
         public TextNode ThreeLinkStrings { get; set; }
         public RangeNode<int> ThreeLinkScore { get; set; }

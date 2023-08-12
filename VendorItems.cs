@@ -1,21 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Windows.Forms;
-using System;
-
 using ExileCore;
 using ExileCore.PoEMemory.Components;
 using ExileCore.PoEMemory.Elements;
-using ExileCore.PoEMemory.Elements.InventoryElements;
 using ExileCore.PoEMemory.MemoryObjects;
-using ExileCore.Shared;
 using ExileCore.Shared.Enums;
-using ExileCore.Shared.Helpers;
-using ImGuiNET;
 using SharpDX;
 using Vector2N = System.Numerics.Vector2;
 
@@ -44,31 +34,19 @@ namespace VendorItems
         List<string> PartialClassNamesToIgnore = new List<string>();
         int inventoryIndex = 1;
 
-
-
         public override bool Initialise()
         {
-            
-
             return true;
-
         }
 
         public override void Render()
         {
-
-
-
-
-
             updateSettings();
             VendorShop();
             printInterestItems();
             interestingItemsPurchase.Clear();
             interestingItems.Clear();
-
         }
-
 
         static List<string> SortLinks(List<string> inputList)
         {
@@ -112,9 +90,6 @@ namespace VendorItems
                
                 Graphics.DrawBox(drawBoxFix, newColorBlack, 5);
                 Graphics.DrawFrame(drawBoxFix, newColorWhite, 2);
-                
-
-
 
                 foreach ((string className, string itemType, int inventoryPage, int score) in interestingItemsSorted)
                     {
@@ -142,27 +117,13 @@ namespace VendorItems
                         baseColor = Settings.CTierThresholdColor;
                     }
 
-
                     drawTextVector3 = Graphics.DrawText(inventoryPage.ToString() + " " + className + " " + itemType + " \t " + score.ToString(), newInfoPanel, baseColor);
                     
                     newInfoPanel.Y += 10;
                 }
 
             }
-
-
-            
-
-
-
         }
-
-       
-
-       
-
-
-
 
         private void VendorShop()
         {
@@ -173,8 +134,6 @@ namespace VendorItems
                 
                 foreach (var inventory in ingameState.ServerData.NPCInventories)
                 {
-
-                    
                     if (inventory.Inventory.CountItems > 0)
                     {
                         var auxaux = inventory.Inventory.InventorySlotItems;
@@ -185,7 +144,6 @@ namespace VendorItems
 
                 }
                 var inventoryZone = ingameState.IngameUi.InventoryPanel[InventoryIndex.PlayerInventory].VisibleInventoryItems;
-
             }
         }
 
@@ -197,14 +155,9 @@ namespace VendorItems
             var comp = serverData.CompletedAreas;
             var shEld = serverData.ShaperElderAreas;
             var playerLevel = GameController.Player.GetComponent<Player>().Level;
-
-            
-
             var inventoryItemIcon = ingameState.UIHover.AsObject<HoverItemIcon>();
             var UIHoverEntity = ingameState.UIHover.Entity;
-
             var tooltip = inventoryItemIcon?.Tooltip;
-
             
             var playerLevelOverride = Math.Min(60, playerLevel);
             if (Settings.PlayerLevelOverrideDebug)
@@ -212,36 +165,15 @@ namespace VendorItems
                 playerLevelOverride = Math.Min(60, Settings.PlayerLevelOverride);
             }
 
-            
-
             foreach (var item in items)
             {
                 List<int> weights = new List<int>();
-                
-
-
-              
-
-
-
 
                 if (item == null) continue;
       
-
                 if (item.Item.Path.Contains("Currency") || item.Item.Path.Contains("Gems")) continue;
 
-
                 var drawRect = item.GetClientRect();
-
-
-                
-
-          
-
-
-                
-
-                
 
                 var itemMods = item?.Item.GetComponent<Mods>();
                 var itemSockets = item?.Item.GetComponent<Sockets>();
@@ -257,7 +189,6 @@ namespace VendorItems
 
                 List<string> interestingThings = new List<string>();
 
-                
                 var auxChildrenFirst = ingameState?.IngameUi?.PurchaseWindow;
                 
                 var auxpurchaseWindow = auxChildrenFirst?.GetChildAtIndex(7)?.GetChildFromIndices(1);
@@ -274,7 +205,6 @@ namespace VendorItems
                 var itemRectHeight = squareHeight * item.SizeY;
 
                 var drawRectFix = new RectangleF(itemRectPosX, itemRectPosY, itemRectWidth, itemRectHeight);
-                
 
                 drawRectFix.Top += 7 ;
                 //drawRectFix.Bottom += offset ;
@@ -287,10 +217,7 @@ namespace VendorItems
                      isPageVisible = purchaseWindow.IsVisible;
                 }
 
-                
-           
                 bool anyMatch =  PartialClassNamesToIgnore.Any(className.Contains);
-                
                 
                 //bool anyMatch = PartialClassNamesToIgnore.Any(item => item.Contains(className));
 
@@ -314,7 +241,6 @@ namespace VendorItems
                     weights.Add(Settings.GlobalDotScore * Dot);
                 }
 
-
                 bool existsAddedSpellFire = mods.Any(s => s.Name.Contains("SpellAddedFireDamage") || s.Group.Contains("AddedFireDamageSpellsAndAttacks") );
                 if (existsAddedSpellFire)
                 {
@@ -323,7 +249,6 @@ namespace VendorItems
                     var total = addedFireSpellDamageAverage + addedFireSpellDamageAverageImp;
                     interestingThings.Add(total.ToString() + " To spells");
                     weights.Add((int)(Settings.AddedFireToSpellsScore * total));
-
                 }
                 
                 bool existsAddedSpellCold = mods.Any(s => s.Name.Contains("SpellAddedColdDamage") || s.Group.Contains("AddedColdDamageSpellsAndAttacks"));
@@ -334,7 +259,6 @@ namespace VendorItems
                     var total = addedColdSpellDamageAverage + addedColdSpellDamageAverageImp;
                     interestingThings.Add(total.ToString() + " To spells");
                     weights.Add((int)(Settings.AddedColdToSpellsScore * total));
-
                 }
                 
                 bool existsAddedSpellLight = mods.Any(s => s.Name.Contains("SpellAddedLightningDamage") || s.Group.Contains("AddedLightningDamageSpellsAndAttacks"));
@@ -345,7 +269,6 @@ namespace VendorItems
                     var total = addedLightningSpellDamageAverage + addedLightningSpellDamageAverageImp;
                     interestingThings.Add(total.ToString() + " To spells");
                     weights.Add((int)(Settings.AddedLightningToSpellsScore * total));
-
                 }
                     
 
@@ -359,7 +282,6 @@ namespace VendorItems
                         var total = spellDamage1 + spellDamage2;
                         interestingThings.Add(total.ToString() + " SpellDamage");
                         weights.Add((int)(Settings.SpellDamageScore * total));
-
                     }
 
                     bool existsSpellCrit = mods.Any(s => s.Name.Contains("SpellCriticalStrikeChance"));
@@ -418,9 +340,7 @@ namespace VendorItems
                         var total = existsFirePercent1 + existsFirePercent2;
                         interestingThings.Add(total.ToString() + " Fire Damage");
                         weights.Add((int)(Settings.FireDamageScore * total));
-
                     }
-
 
                     bool existsColdPercent = mods.Any(s => s.Name.Contains("ColdDamagePrefixOnWeapon") || s.Name.Contains("ColdDamagePercent"));
                     if (existsColdPercent)
@@ -455,14 +375,12 @@ namespace VendorItems
                     bool existsMinionDamage = mods.Any(s => s.Name.Contains("MinionDamageOnWeapon") || s.Name.Contains("MinionDamageAndManaOnWeapon") || s.Name.Contains("MinionDamageImplicitWand") );
                     if (existsMinionDamage)
                     {
-
                         var minionDamage1 = mods?.FindAll(s => s.Name.Contains("MinionDamageOnWeapon"))?.Sum(item => item?.Values[0] ?? 0);
                         var minionDamage2 = mods?.FindAll(s => s.Name.Contains("MinionDamageAndManaOnWeapon"))?.Sum(item => item?.Values[0] ?? 0);
                         var minionDamage3 = mods?.FindAll(s => s.Name.Contains("MinionDamageImplicitWand"))?.Sum(item => item?.Values[0] ?? 0);
                         var total = minionDamage1 + minionDamage2 + minionDamage3;
                         interestingThings.Add(total.ToString() + " Minion Damage");
                         weights.Add((int)(Settings.MinionDamageScore * total));
-
                     }
 
                     bool existsFireDotMultiplier = mods.Any(s => s.Name.Contains("FireDamageOverTimeMultiplier"));
@@ -478,7 +396,6 @@ namespace VendorItems
                     var Dot = mods.Find(s => s.Name.Contains("ColdDamageOverTimeMultiplier")).Values[0];
                     interestingThings.Add(Dot.ToString() + " Cold Damage Over Time Multi");
                     weights.Add(Settings.ColdDotScore * Dot);
-
                 }
                 bool existsChaosDotMultiplier = mods.Any(s => s.Name.Contains("ChaosDamageOverTimeMultiplier"));
                 if (existsChaosDotMultiplier)
@@ -495,34 +412,26 @@ namespace VendorItems
                     weights.Add(Settings.PhysicalDotScore * Dot);
                 }
 
-
-
-
-
                 bool existsPlusOneFire = mods.Any(s => s.Name.Contains("GlobalFireSpellGemsLevel1"));
-                if (existsPlusOneFire)                {
-                   
+                if (existsPlusOneFire)                {    
                     interestingThings.Add(  " POG +1 FIRE");
                     weights.Add(Settings.OneHandPlusFireScore);
                 }
                 bool existsPlusOneCold = mods.Any(s => s.Name.Contains("GlobalColdSpellGemsLevel1"));
                 if (existsPlusOneCold)
                 {
-
                     interestingThings.Add("POG +1 cold");
                     weights.Add(Settings.OneHandPlusColdScore);
                 }
                 bool existsPlusOneLightning = mods.Any(s => s.Name.Contains("GlobalLightningSpellGemsLevel1"));
                 if (existsPlusOneLightning)
                 {
-
                     interestingThings.Add("POG +1 LIGHT");
                     weights.Add(Settings.OneHandPlusLightScore);
                 }
                 bool existsPlusOneChaos = mods.Any(s => s.Name.Contains("GlobalChaosSpellGemsLevel1"));
                 if (existsPlusOneChaos)
                 {
-
                     interestingThings.Add("POG +1 chaos");
                     weights.Add(Settings.OneHandPlusChaosScore);
                 }
@@ -530,14 +439,12 @@ namespace VendorItems
                 bool existsPlusOnePhysical = mods.Any(s => s.Name.Contains("GlobalPhysicalSpellGemsLevel1"));
                 if (existsPlusOnePhysical)
                 {
-
                     interestingThings.Add("POG +1 PHYS");
                     weights.Add(Settings.OneHandPlusPhysicalScore);
                 }
                 bool existsPlusOneMinion = mods.Any(s => s.Name.Contains("MinionGemLevel1h1"));
                 if (existsPlusOneMinion)
                 {
-
                     interestingThings.Add("POG +1 MINION");
                     weights.Add(Settings.OneHandPlusMinionScore);
                 }
@@ -575,10 +482,7 @@ namespace VendorItems
                         interestingThings.Add("POG +" + GemLevel + " Lightning");
                         weights.Add(Settings.TwoHandPlusLightScore * GemLevel);
                     }
-
                 }
-
-
 
                 bool existsPlusChaos2h = mods.Any(s => s.Name.Contains("GlobalChaosSpellGemsLevelTwoHand"));
                 if (existsPlusChaos2h)
@@ -592,7 +496,6 @@ namespace VendorItems
 
                 }
 
-
                 bool existsPlusPhysical2h = mods.Any(s => s.Name.Contains("GlobalPhysicalSpellGemsLevelTwoHand"));
                 if (existsPlusPhysical2h)
                 {
@@ -602,18 +505,12 @@ namespace VendorItems
                         interestingThings.Add("POG +" + GemLevel + " Phyis");
                         weights.Add(Settings.TwoHandPlusPhysicalScore*GemLevel);
                     }
-
                 }
-
-
-
+                
                 // amulets
-
-
                 bool existsPlusFireAmmy = mods.Any(s => s.Name.Contains("GlobalFireGemLevel1"));
                 if (existsPlusFireAmmy)
                 {
-
                     interestingThings.Add("POG +1 FIRE");
                     weights.Add(Settings.AmuletPlusFireScore );
                 }
@@ -621,7 +518,6 @@ namespace VendorItems
                 bool existsPlusColdAmmy = mods.Any(s => s.Name.Contains("GlobalColdGemLevel1"));
                 if (existsPlusColdAmmy)
                 {
-
                     interestingThings.Add("POG +1 Cold");
                     weights.Add(Settings.AmuletPlusColdScore);
                 }
@@ -629,7 +525,6 @@ namespace VendorItems
                 bool existsPlusLightningAmmy = mods.Any(s => s.Name.Contains("GlobalLightningGemLevel1"));
                 if (existsPlusLightningAmmy)
                 {
-
                     interestingThings.Add("POG +1 Light");
                     weights.Add(Settings.AmuletPlusLightScore);
                 }
@@ -637,28 +532,21 @@ namespace VendorItems
                 bool existsPlusChaosAmmy = mods.Any(s => s.Name.Contains("GlobalChaosGemLevel1"));
                 if (existsPlusChaosAmmy)
                 {
-
                     interestingThings.Add("POG +1 Chaos");
                     weights.Add(Settings.AmuletPlusChaosScore);
-
                 }
                 bool existsPlusPhysicalAmmy = mods.Any(s => s.Name.Contains("GlobalPhysicalGemLevel1"));
                 if (existsPlusPhysicalAmmy)
                 {
-
                     interestingThings.Add("POG +1 PHY");
                     weights.Add(Settings.AmuletPlusPhysicalScore);
-
                 }
                 bool existsPlusSkillAmmy = mods.Any(s => s.Name.Contains("GlobalSkillGemLevel1"));
                 if (existsPlusSkillAmmy)
                 {
-
                     interestingThings.Add("POG +1 ALLLL");
                     weights.Add(Settings.AmuletPlusGlobalScore);
-
                 }
-
 
                 // helmet minion
                 GemLevel = 0;
@@ -667,16 +555,11 @@ namespace VendorItems
                 {
                     GemLevel = mods.Find(s => s.Name.Contains("GlobalIncreaseMinionSpellSkillGemLevel")).Values[0];
                     
-                        interestingThings.Add("POG +" + GemLevel + " Minion Helm");
+                    interestingThings.Add("POG +" + GemLevel + " Minion Helm");
                     weights.Add(Settings.MinionHelmGemScore * GemLevel);
-
-
                 }
-
-
-
-                     
-                    bool anyResistance = mods.Any(s => s.Group.Contains("Resistance")) && !mods.Any(s => s.Name.Contains("ResistanceImplicit")) && !mods.Any(s => s.Name.Contains("ResistImplicit"));
+    
+                bool anyResistance = mods.Any(s => s.Group.Contains("Resistance")) && !mods.Any(s => s.Name.Contains("ResistanceImplicit")) && !mods.Any(s => s.Name.Contains("ResistImplicit"));
                 bool anyLife = mods.Any(s => s.Group.Contains("IncreasedLife")) && !mods.Any(s => s.Name.Contains("LifeImplicit"));
                 
                 if (anyResistance && !item.Item.Path.Contains("/Weapons/"))
@@ -689,13 +572,6 @@ namespace VendorItems
                     var FireAndLightningResistance = mods?.Find(s => s.Group.Contains("FireAndLightningResistance"))?.Values[0] ?? 0;
                     var ColdAndLightningResistance = mods?.Find(s => s.Group.Contains("ColdAndLightningResistance"))?.Values[0] ?? 0;
                     var FireAndColdResistance = mods?.Find(s => s.Group.Contains("FireAndColdResistance"))?.Values[0] ?? 0;
-
-
-
-
-
-
-
                     var allResSummed = (FireAndColdResistance + ColdAndLightningResistance + FireAndLightningResistance) * 2 + allResMods * 3 + fireRes + coldRes + lightningRes + chaosRes;
                     interestingThings.Add("Total Res: " + allResSummed);
                     weights.Add(Settings.TotalResistScore * allResSummed);
@@ -717,7 +593,6 @@ namespace VendorItems
                     interestingThings.Add("Cast Speed +" + castSpeedValue);
                     weights.Add(Settings.CastSpeedScore * castSpeedValue);
                 }
-
 
                 if (!className.Contains("Sceptre") && !className.Contains("Wand"))
                 {
@@ -760,7 +635,6 @@ namespace VendorItems
                         interestingThings.Add("FLAT Light damage +" + FlatLightTwoHandValue);
                         weights.Add((int)(Settings.FlatLightScore * FlatLightTwoHandValue));
                     }
-
 
                     bool FlatColdTwoHand = mods.Any(s => s.Name.Contains("LocalAddedColdDamageTwoHand"));
 
@@ -837,46 +711,41 @@ namespace VendorItems
                 if (!className.Contains("Dagger") && !className.Contains("Claw") && !className.Contains("Sceptre") && !className.Contains("Axe") && !className.Contains("Wand") && !className.Contains("Mace") && !className.Contains("Sword")) 
                 {
 
-                
-                bool AddedFireDamage = mods.Any(s => s.Name.Contains("AddedFireDamage") && !s.Name.Contains("TwoHand") && !s.Name.Contains("Implicit")); 
-                // jewelry and gloves added damage 
-                if (AddedFireDamage)
-                {
-                    var AddedFireDamageValue = mods.Find(s => s.Name.Contains("AddedFireDamage") && !s.Name.Contains("TwoHand") && !s.Name.Contains("Implicit")).Values.Average();
-                    interestingThings.Add("FLAT Fire damage +" + AddedFireDamageValue);
-                    weights.Add((int)(Settings.AddedFireDamageScore * AddedFireDamageValue));
-                }
+                    bool AddedFireDamage = mods.Any(s => s.Name.Contains("AddedFireDamage") && !s.Name.Contains("TwoHand") && !s.Name.Contains("Implicit")); 
+                    // jewelry and gloves added damage 
+                    if (AddedFireDamage)
+                    {
+                        var AddedFireDamageValue = mods.Find(s => s.Name.Contains("AddedFireDamage") && !s.Name.Contains("TwoHand") && !s.Name.Contains("Implicit")).Values.Average();
+                        interestingThings.Add("FLAT Fire damage +" + AddedFireDamageValue);
+                        weights.Add((int)(Settings.AddedFireDamageScore * AddedFireDamageValue));
+                    }
 
+                    bool AddedColdDamage = mods.Any(s => s.Name.Contains("AddedColdDamage") && !s.Name.Contains("TwoHand") && !s.Name.Contains("Implicit"));
+                    // jewelry and gloves added damage 
+                    if (AddedColdDamage)
+                    {
+                        var AddedColdDamageValue = mods.Find(s => s.Name.Contains("AddedColdDamage")  && !s.Name.Contains("TwoHand") && !s.Name.Contains("Implicit")).Values.Average();
+                        interestingThings.Add("FLAT Cold damage +" + AddedColdDamageValue);
+                                            weights.Add((int)(Settings.AddedColdDamageScore * AddedColdDamageValue));
+                    }
 
-                bool AddedColdDamage = mods.Any(s => s.Name.Contains("AddedColdDamage") && !s.Name.Contains("TwoHand") && !s.Name.Contains("Implicit"));
-                // jewelry and gloves added damage 
-                if (AddedColdDamage)
-                {
-                    var AddedColdDamageValue = mods.Find(s => s.Name.Contains("AddedColdDamage")  && !s.Name.Contains("TwoHand") && !s.Name.Contains("Implicit")).Values.Average();
-                    interestingThings.Add("FLAT Cold damage +" + AddedColdDamageValue);
-                                        weights.Add((int)(Settings.AddedColdDamageScore * AddedColdDamageValue));
-                }
+                    bool AddedLightDamage = mods.Any(s => s.Name.Contains("AddedLightningDamage") && !s.Name.Contains("TwoHand") && !s.Name.Contains("Implicit"));
+                    // jewelry and gloves added damage 
+                    if (AddedLightDamage)
+                    {
+                        var AddedLightDamageValue = mods.Find(s => s.Name.Contains("AddedLightningDamage") && !s.Name.Contains("TwoHand") && !s.Name.Contains("Implicit")).Values.Average();
+                        interestingThings.Add("FLAT Light damage +" + AddedLightDamageValue);
+                        weights.Add((int)(Settings.AddedLightDamageScore * AddedLightDamageValue));
+                    }
 
-
-                bool AddedLightDamage = mods.Any(s => s.Name.Contains("AddedLightningDamage") && !s.Name.Contains("TwoHand") && !s.Name.Contains("Implicit"));
-                // jewelry and gloves added damage 
-                if (AddedLightDamage)
-                {
-                    
-                    var AddedLightDamageValue = mods.Find(s => s.Name.Contains("AddedLightningDamage") && !s.Name.Contains("TwoHand") && !s.Name.Contains("Implicit")).Values.Average();
-                    interestingThings.Add("FLAT Light damage +" + AddedLightDamageValue);
-                    weights.Add((int)(Settings.AddedLightDamageScore * AddedLightDamageValue));
-                }
-
-
-                bool AddedPhysicalDamage = mods.Any(s => s.Name.Contains("AddedPhysicalDamage") && !s.Name.Contains("TwoHand") && !s.Name.Contains("Implicit"));
-                // jewelry and gloves added damage 
-                if (AddedPhysicalDamage)
-                {
-                    var AddedPhysicalDamageValue = mods.Find(s => s.Name.Contains("AddedPhysicalDamage") && !s.Name.Contains("TwoHand") && !s.Name.Contains("Implicit")).Values.Average();
-                    interestingThings.Add("FLAT Physical damage +" + AddedPhysicalDamageValue);
-                    weights.Add((int)(Settings.AddedPhysicalDamageScore * AddedPhysicalDamageValue));
-                }
+                    bool AddedPhysicalDamage = mods.Any(s => s.Name.Contains("AddedPhysicalDamage") && !s.Name.Contains("TwoHand") && !s.Name.Contains("Implicit"));
+                    // jewelry and gloves added damage 
+                    if (AddedPhysicalDamage)
+                    {
+                        var AddedPhysicalDamageValue = mods.Find(s => s.Name.Contains("AddedPhysicalDamage") && !s.Name.Contains("TwoHand") && !s.Name.Contains("Implicit")).Values.Average();
+                        interestingThings.Add("FLAT Physical damage +" + AddedPhysicalDamageValue);
+                        weights.Add((int)(Settings.AddedPhysicalDamageScore * AddedPhysicalDamageValue));
+                    }
                 }
                 // quiver
                 bool AddedFireDamageQuiver = mods.Any(s => s.Name.Contains("AddedFireDamageQuiver") && !s.Name.Contains("Implicit"));
@@ -909,8 +778,6 @@ namespace VendorItems
                     weights.Add((int)(Settings.AddedPhysicalDamageQuiverScore * AddedPhysicalDamageQuiverValue));
                 }
 
-
-
                 bool attackSpeed = mods.Any(s => s.Group.Contains("IncreasedAttackSpeed"));
                 if (attackSpeed && !item.Item.Path.Contains("/Weapons/"))
                 {
@@ -918,9 +785,7 @@ namespace VendorItems
                     interestingThings.Add("IAS +" + attackSpeedValue);
                     weights.Add((int)(Settings.IncreasedAttackSpeedScore * attackSpeedValue));
                 }
-
                 }
-
 
                 if (links == 6)               
                 {
@@ -939,7 +804,6 @@ namespace VendorItems
                 }
                 else if (links == 4 && !anyMatch)
                 {
-
                     var linkColors = itemSockets.SocketGroup.First(s => s.Length == 4);
                     var orderedLinkColors = String.Concat(linkColors.OrderByDescending(c => c));
 
@@ -952,7 +816,6 @@ namespace VendorItems
                     
                 }else if (links == 3 && !anyMatch)
                 {
-
                     var linkColors = itemSockets.SocketGroup.First(s => s.Length == 3);
                     var orderedLinkColors = String.Concat(linkColors.OrderByDescending(c => c));
 
@@ -962,23 +825,16 @@ namespace VendorItems
                         interestingThings.Add(orderedLinkColors + " 3L " + className);
                         weights.Add(Settings.ThreeLinkScore);
                     }
-
                 }
-
 
                 if (isRGB)
                 {
                     interestingThings.Add("RGB");
                     weights.Add(Settings.RGBScore);
-
                 }
-
-
-
 
                 if (interestingThings.Count() > 0)
                 {
-                    
                     var scaleFactor = 5.2f - (0.07 * playerLevelOverride);
                     int finalScore = 0;
                     if (Settings.UseScoreLevelScaler)
@@ -1004,8 +860,6 @@ namespace VendorItems
                     var drawBoxScour = new RectangleF(drawRect.X + drawRect.Width / 4, drawRect.Y + drawRect.Height / 4, drawRect.Width / 2, drawRect.Height / 2);
                     var drawBox2 = new RectangleF(drawRect.X + 2, drawRect.Y + 2, drawRect.Width - 4, drawRect.Height - 4);
 
-
-
                     if (finalScore >= Settings.STierThreshold)
                     {
                         colorBorder = Settings.STierThresholdColor;
@@ -1022,27 +876,14 @@ namespace VendorItems
                     {
                         colorBorder = Settings.CTierThresholdColor;
                     }
-                    
 
                     if (isPageVisible)
                     {
                         Graphics.DrawFrame(drawRectFix, colorBorder, 5);
                     }
-
                 }
-
-
             }
         }
         }
-
-
-
-
-
-
-
-
-
     }
 }
