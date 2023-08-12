@@ -55,6 +55,9 @@ namespace VendorItems
 
         [Menu(null, "Put comma separated partial class names to ignore them from being mod filtered, RGB, 6L, 5L and 6s still apply. Doesn't need to be complete, for instance Sword,Axe")]
         public TextNode ItemClassesToIgnoreModFiltering { get; set; }
+
+        public ToggleNode IgnoreFiltering { get; set; }
+        
         public RangeNode<int> MovementSpeedScore { get; set; }
         public RangeNode<int> GlobalDotScore { get; set; }
         //public RangeNode<int> ElementalDamageToSpellsScore { get; set; }
@@ -180,9 +183,10 @@ namespace VendorItems
             ThreeLinkStrings = new TextNode("BBB,BBR");
             ThreeLinkScore = new RangeNode<int>(200, 0, 5000);            
             ThreeLinkCharacterLevelThreshold = new RangeNode<int>(35, 0, 100);
-            
+            IgnoreFiltering = new ToggleNode(false);
             ItemClassesToIgnoreModFiltering = new TextNode("Mace,Claw");
-            MovementSpeedScore = new RangeNode<int>(100, 0, 1000);
+
+            MovementSpeedScore = new RangeNode<int>(40, 0, 1000);
             GlobalDotScore = new RangeNode<int>(30, 0, 1000);
             //ElementalDamageToSpellsScore = new RangeNode<int>(20, 0, 1000);
             FireDotScore = new RangeNode<int>(30, 0, 1000);
@@ -235,22 +239,22 @@ namespace VendorItems
             AddedColdDamageQuiverScore = new RangeNode<int>(15, 1, 2000);
             AddedLightDamageQuiverScore = new RangeNode<int>(15, 1, 2000);
             AddedPhysicalDamageQuiverScore = new RangeNode<int>(30, 1, 2000);
-
-            AddedFireToSpellsScore = new RangeNode<int>(30, 1, 2000);
-            AddedColdToSpellsScore = new RangeNode<int>(20, 1, 2000);
-            AddedLightningToSpellsScore = new RangeNode<int>(20, 1, 2000);
-            SpellDamageScore = new RangeNode<int>(10, 1, 2000);
+            0
+            AddedFireToSpellsScore = new RangeNode<int>(20, 1, 2000);
+            AddedColdToSpellsScore = new RangeNode<int>(13, 1, 2000);
+            AddedLightningToSpellsScore = new RangeNode<int>(13, 1, 2000);
+            SpellDamageScore = new RangeNode<int>(5, 1, 2000);
             SpellCritChanceScore = new RangeNode<int>(4, 1, 2000);
             CritMultiScore = new RangeNode<int>(20, 1, 2000);
-            MinionDamageScore = new RangeNode<int>(10, 1, 2000);
+            MinionDamageScore = new RangeNode<int>(5, 1, 2000);
             MinionCritChanceScore = new RangeNode<int>(4, 1, 2000);
             MinionAttackCastScore = new RangeNode<int>(10, 1, 2000);
             MinionCriticalMultiplierScore = new RangeNode<int>(20, 1, 2000);
             WeaponElementalDamageScore = new RangeNode<int>(15, 1, 2000);
-            FireDamageScore = new RangeNode<int>(10, 1, 2000);
-            BurnDamageScore = new RangeNode<int>(10, 1, 2000);
-            ColdDamageScore = new RangeNode<int>(10, 1, 2000);
-            LightningDamageScore = new RangeNode<int>(10, 1, 2000);
+            FireDamageScore = new RangeNode<int>(8, 1, 2000);
+            BurnDamageScore = new RangeNode<int>(6, 1, 2000);
+            ColdDamageScore = new RangeNode<int>(8, 1, 2000);
+            LightningDamageScore = new RangeNode<int>(8, 1, 2000);
 
 
 
