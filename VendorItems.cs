@@ -277,9 +277,6 @@ namespace VendorItems
 
                     //bool anyMatch = PartialClassNamesToIgnore.Any(item => item.Contains(className));
 
-                    LogMessage("any match " + anyMatch.ToString(), 5, Color.Yellow);
-                    LogMessage("ignorelist " + PartialClassNamesToIgnore.Count.ToString(), 5, Color.Yellow);
-
                     if (!anyMatch)
                     {
                         var modCheckReturn = modCheck(item.Item);
