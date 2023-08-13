@@ -154,6 +154,10 @@ namespace VendorItems
 
         public RangeNode<int> RGBScore { get; set; }
 
+        public RangeNode<int> ResultX { get; set; }
+        public RangeNode<int> ResultY { get; set; }
+        public RangeNode<int> TextSpacing { get; set; }
+
         public ToggleNode Enable { get; set; } = new ToggleNode(false);
 
         public VendorItemsSettings()
@@ -163,6 +167,9 @@ namespace VendorItems
             PlayerLevelOverrideDebug = new ToggleNode(false);
             UseScoreLevelScaler = new ToggleNode(false);
             PlayerLevelOverride = new RangeNode<int>(1, 1, 100);
+            ResultX = new RangeNode<int>(0, 0, 3000);
+            ResultY = new RangeNode<int>(500, 0, 3000);
+            TextSpacing = new RangeNode<int>(10, 0, 30);
 
             MinScoreThreshold = new RangeNode<int>(1, 0, 10000);
 

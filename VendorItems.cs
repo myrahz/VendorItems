@@ -106,11 +106,11 @@ namespace VendorItems
 
             if ((auxChildrenFirst.IsVisible || (haggleWindow.IsVisible && haggleText =="Gamble")) && interestingItems.Count() > 0) { 
 
-                Vector2 newInfoPanel = new Vector2(000, 500);
+                Vector2 newInfoPanel = new Vector2(Settings.ResultX.Value, Settings.ResultY.Value);
                 var drawBox = new RectangleF(newInfoPanel.X, newInfoPanel.Y, 306, 200);
                 List<(string, string, int, int)> interestingItemsSorted = interestingItems.FindAll(pair => pair.Item4 > Settings.MinScoreThreshold).OrderByDescending(pair => pair.Item4).ToList();
                 var drawBoxFix = drawBox;
-                drawBoxFix.Height = (interestingItemsSorted.Count() * 10) + 5;
+                drawBoxFix.Height = (interestingItemsSorted.Count() * Settings.TextSpacing.Value) + 5;
                 Color newColorBlack = new Color(Color.Black.R, Color.Black.G, Color.Black.B, Convert.ToByte(200));
                 Color newColorWhite = new Color(Color.White.R, Color.White.G, Color.White.B, Convert.ToByte(100));            
 
@@ -150,7 +150,7 @@ namespace VendorItems
 
                     drawTextVector3 = Graphics.DrawText(inventoryPage.ToString() + " " + className + " " + itemType + " \t " + score.ToString(), newInfoPanel, baseColor);
                     
-                    newInfoPanel.Y += 10;
+                    newInfoPanel.Y += Settings.TextSpacing.Value;
                 }
 
             }
