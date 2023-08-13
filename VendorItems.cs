@@ -194,7 +194,11 @@ namespace VendorItems
         {
             var ingameState = GameController.Game.IngameState;            
             var haggleWindow = ingameState.IngameUi.HaggleWindow;
-            var inventory = haggleWindow.GetChildFromIndices(8, 1, 0, 0);
+            var haggleDealVisible = haggleWindow.GetChildFromIndices(12, 0).IsVisible;
+            if (haggleWindow.IsVisible) { 
+            var inventory = haggleWindow?.GetChildFromIndices(8, 1, 0, 0);
+            
+            
             var itemList = inventory?.GetChildrenAs<NormalInventoryItem>().Skip(1).ToList() ?? new List<NormalInventoryItem>();
             var haggleText = haggleWindow.GetChildFromIndices(6, 2, 0)?.Text;
             var playerLevel = GameController.Player.GetComponent<Player>().Level;
@@ -402,7 +406,7 @@ namespace VendorItems
                             }
 
 
-                            if (true && canDraw)
+                            if (true && canDraw && !haggleDealVisible)
                             {
                                 Graphics.DrawFrame(drawRect, colorBorder, 5);
                             }
@@ -414,7 +418,7 @@ namespace VendorItems
                 }
 
             }
-
+            }
         }
 
         private bool checkRectOverlaps(RectangleF rect1, RectangleF rect2)
