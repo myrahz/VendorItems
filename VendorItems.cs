@@ -1290,7 +1290,7 @@ namespace VendorItems
                     }
 
 
-                    if (isPageVisible && canDraw)
+                    if (isPageVisible && canDraw && finalScore >= Settings.MinScoreThreshold.Value)
                     {
                         Graphics.DrawFrame(drawRectFix, colorBorder, 5);
                     }
