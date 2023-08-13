@@ -104,7 +104,7 @@ namespace VendorItems
 
 
 
-            if ((auxChildrenFirst.IsVisible || (haggleWindow.IsVisible && haggleText =="Gamble")) && interestingItems.Count() > 0) { 
+            if ((auxChildrenFirst.IsVisible || (haggleWindow.IsVisible && haggleText =="Deal")) && interestingItems.Count() > 0) { 
 
                 Vector2 newInfoPanel = new Vector2(000, 500);
                 var drawBox = new RectangleF(newInfoPanel.X, newInfoPanel.Y, 306, 200);
@@ -207,7 +207,7 @@ namespace VendorItems
             {
                 playerLevelOverride = Math.Min(60, Settings.PlayerLevelOverride);
             }
-            if(haggleText == "Gamble") { 
+            if(haggleText == "Deal") { 
                 foreach (var item in itemList)
                 {
                     List<int> weights = new List<int>();
