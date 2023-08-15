@@ -35,6 +35,7 @@ namespace VendorItems
         public RangeNode<int> ResultX { get; set; }
         public RangeNode<int> ResultY { get; set; }
         public RangeNode<int> TextSpacing { get; set; }
+        public RangeNode<int> WordWrapSize { get; set; }
         public RangeNode<int> MinScoreThreshold { get; set; }
 
         public ColorNode STierThresholdColor { get; set; }
@@ -226,6 +227,8 @@ namespace VendorItems
 			ResultX = new RangeNode<int>(0, 0, 3000);
             ResultY = new RangeNode<int>(500, 0, 3000);
             TextSpacing = new RangeNode<int>(10, 0, 30);
+            WordWrapSize = new RangeNode<int>(40, 0, 100);
+            
             MinScoreThreshold = new RangeNode<int>(1, 0, 10000);
 
             STierThresholdColor = new ColorNode(Color.DeepPink);
@@ -298,7 +301,7 @@ namespace VendorItems
             MinionAttackCastScore = new RangeNode<int>(10, 1, 2000);
             MinionCriticalMultiplierScore = new RangeNode<int>(20, 1, 2000);
 
-            IgnoreResistsWeaponsQuivers = new ToggleNode(false);
+            IgnoreResistsWeaponsQuivers = new ToggleNode(true);
             LifeScore = new RangeNode<int>(10, 0, 1000);
             TotalResistScore = new RangeNode<int>(15, 0, 1000);          
             SuppressSpells = new RangeNode<int>(100, 1, 2000);
@@ -347,7 +350,7 @@ namespace VendorItems
 
             
 
-            IgnoreAttributesWeapons = new ToggleNode(false);
+            IgnoreAttributesWeapons = new ToggleNode(true);
 
             StrScore = new RangeNode<int>(5, 0, 1000);            
             DexScore = new RangeNode<int>(5, 0, 1000);
