@@ -430,7 +430,13 @@ namespace VendorItems
 
                         //INTERESTINGTHINGS LIST
                         //WEIGHTS LIST
-
+                        if (itemIsVeiled)
+                        {
+                            var textPosX = drawRect.BottomLeft.X + 5;
+                            var textPosY = drawRect.BottomLeft.Y - 15;
+                            Graphics.DrawText("UNVEIL", new Vector2N(textPosX, textPosY), Color.Gold);
+                            //Graphics.DrawFrame(drawRect, Color.White, 3);
+                        }
 
                         if (interestingThings.Count() > 0)
                         {
@@ -495,14 +501,9 @@ namespace VendorItems
 
                             if (inventoryIsVisible && canDraw && !leftPanel.IsVisible && !purchaseWindow.IsVisible && !ritualIsVisible && !haggleWindow.IsVisible && finalScore >= Settings.MinScoreThreshold.Value)
                             {
+                                
                                 Graphics.DrawFrame(drawRect, colorBorder, 5);
-                                if (itemIsVeiled)
-                                {
-                                    var textPosX = drawRect.BottomLeft.X + 5;
-                                    var textPosY = drawRect.BottomLeft.Y - 15;
-                                    Graphics.DrawText("UNVEIL", new Vector2N(textPosX, textPosY), Color.Gold);
-                                    //Graphics.DrawFrame(drawRect, Color.White, 3);
-                                }
+                                
 
                                 if (isWeapon)
                                 {
